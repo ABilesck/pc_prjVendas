@@ -5,17 +5,72 @@
  */
 package view;
 
+import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
+import dao.*;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.MaskFormatter;
+
 /**
  *
  * @author aluno
  */
-public class FrmCliente extends javax.swing.JFrame {
+public class FrmCliente extends javax.swing.JInternalFrame {
+
+    MaskFormatter mfUf;
+    MaskFormatter mfCep;
+    MaskFormatter mfTel;
+    MaskFormatter mfData;
+
+    boolean gravar;
+    boolean editar;
 
     /**
      * Creates new form FrmCliente
      */
     public FrmCliente() {
-        initComponents();
+
+        try {
+
+            initComponents();
+
+            mfUf = new MaskFormatter("UU");
+            mfUf.setPlaceholderCharacter('_');
+            mfUf.setValueContainsLiteralCharacters(false);
+            mfUf.setValueClass(String.class);
+            DefaultFormatterFactory dffUf = new DefaultFormatterFactory(mfUf);
+            txtUf.setFormatterFactory(dffUf);
+
+            mfCep = new MaskFormatter("#####-###");
+            mfCep.setPlaceholderCharacter('_');
+            mfCep.setValueContainsLiteralCharacters(false);
+            mfCep.setValueClass(String.class);
+            DefaultFormatterFactory dffCep = new DefaultFormatterFactory(mfCep);
+            txtCep.setFormatterFactory(dffCep);
+
+            mfTel = new MaskFormatter("(##)#####-####");
+            mfTel.setPlaceholderCharacter('_');
+            mfTel.setValueContainsLiteralCharacters(false);
+            mfTel.setValueClass(String.class);
+            DefaultFormatterFactory dffTel = new DefaultFormatterFactory(mfTel);
+            txtTelefone.setFormatterFactory(dffTel);
+
+            mfData = new MaskFormatter("##/##/####");
+            mfData.setPlaceholderCharacter('_');
+            mfData.setValueContainsLiteralCharacters(true);
+            mfData.setValueClass(String.class);
+            DefaultFormatterFactory dffData = new DefaultFormatterFactory(mfData);
+            txtDataNasc.setFormatterFactory(dffData);
+
+        } catch (Exception ex) {
+
+        }
+
     }
 
     /**
@@ -50,15 +105,15 @@ public class FrmCliente extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         txtBairro = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        txtUf = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        txtNascimento = new javax.swing.JTextField();
         txtCep = new javax.swing.JFormattedTextField();
         txtTelefone = new javax.swing.JFormattedTextField();
+        txtUf = new javax.swing.JFormattedTextField();
+        txtDataNasc = new javax.swing.JFormattedTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tblClientes = new javax.swing.JTable();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -79,30 +134,75 @@ public class FrmCliente extends javax.swing.JFrame {
         jMenu2.setText("Edit");
         jMenuBar1.add(jMenu2);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("Vendas da Quitanda do Juquinha");
+        setTitle("Cadastro de Cliente");
+        setPreferredSize(new java.awt.Dimension(570, 370));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         btnIncluir.setText("Incluir");
+        btnIncluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIncluirActionPerformed(evt);
+            }
+        });
 
         btnAlterar.setText("Alterar");
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnPesquisar.setText("Pesquisar");
+        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisarActionPerformed(evt);
+            }
+        });
 
         btnGravar.setText("Gravar");
+        btnGravar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGravarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Código");
 
+        txtCodigo.setEnabled(false);
+
         jLabel2.setText("Nome");
+
+        txtNome.setEnabled(false);
 
         jLabel3.setText("Endereço");
 
+        txtEndereco.setEnabled(false);
+
         jLabel4.setText("Cidade");
 
+        txtCidade.setEnabled(false);
+
         jLabel5.setText("Bairro");
+
+        txtBairro.setEnabled(false);
 
         jLabel6.setText("UF");
 
@@ -111,6 +211,14 @@ public class FrmCliente extends javax.swing.JFrame {
         jLabel8.setText("Telefone");
 
         jLabel9.setText("Nascimento");
+
+        txtCep.setEnabled(false);
+
+        txtTelefone.setEnabled(false);
+
+        txtUf.setEnabled(false);
+
+        txtDataNasc.setEnabled(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -133,9 +241,8 @@ public class FrmCliente extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtNome, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
                     .addComponent(txtEndereco)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(txtBairro, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
-                        .addComponent(txtCidade, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addComponent(txtBairro, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                    .addComponent(txtCidade)
                     .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -145,10 +252,10 @@ public class FrmCliente extends javax.swing.JFrame {
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtCep, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                    .addComponent(txtTelefone)
                     .addComponent(txtUf, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNascimento, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                    .addComponent(txtCep)
-                    .addComponent(txtTelefone))
+                    .addComponent(txtDataNasc))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -177,7 +284,7 @@ public class FrmCliente extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(txtCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9)
-                    .addComponent(txtNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDataNasc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
@@ -185,7 +292,7 @@ public class FrmCliente extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tblClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -208,17 +315,17 @@ public class FrmCliente extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable2);
-        if (jTable2.getColumnModel().getColumnCount() > 0) {
-            jTable2.getColumnModel().getColumn(0).setResizable(false);
-            jTable2.getColumnModel().getColumn(1).setResizable(false);
-            jTable2.getColumnModel().getColumn(2).setResizable(false);
-            jTable2.getColumnModel().getColumn(3).setResizable(false);
-            jTable2.getColumnModel().getColumn(4).setResizable(false);
-            jTable2.getColumnModel().getColumn(5).setResizable(false);
-            jTable2.getColumnModel().getColumn(6).setResizable(false);
-            jTable2.getColumnModel().getColumn(7).setResizable(false);
-            jTable2.getColumnModel().getColumn(8).setResizable(false);
+        jScrollPane2.setViewportView(tblClientes);
+        if (tblClientes.getColumnModel().getColumnCount() > 0) {
+            tblClientes.getColumnModel().getColumn(0).setResizable(false);
+            tblClientes.getColumnModel().getColumn(1).setResizable(false);
+            tblClientes.getColumnModel().getColumn(2).setResizable(false);
+            tblClientes.getColumnModel().getColumn(3).setResizable(false);
+            tblClientes.getColumnModel().getColumn(4).setResizable(false);
+            tblClientes.getColumnModel().getColumn(5).setResizable(false);
+            tblClientes.getColumnModel().getColumn(6).setResizable(false);
+            tblClientes.getColumnModel().getColumn(7).setResizable(false);
+            tblClientes.getColumnModel().getColumn(8).setResizable(false);
         }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -267,6 +374,339 @@ public class FrmCliente extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+
+        DaoCliente c = new DaoCliente();
+
+        c.setNome("");
+
+        ArrayList<DaoCliente> ListaCliente;
+        try {
+
+            ListaCliente = c.pesquisar(c);
+            AtualizaTable(ListaCliente);
+
+        } catch (SQLException ex) {
+
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro no Banco "
+                    + "de dados" + ex.getMessage(),
+                    "Erro:", JOptionPane.ERROR_MESSAGE);
+
+        } catch (ClassNotFoundException ex) {
+
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao carregar "
+                    + "o driver do BD" + ex.getMessage(),
+                    "Erro:", JOptionPane.ERROR_MESSAGE);
+
+        } catch (Exception ex) {
+
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro" + ex.getMessage(),
+                    "Erro:", JOptionPane.ERROR_MESSAGE);
+
+        }
+
+    }//GEN-LAST:event_formWindowOpened
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        // TODO add your handling code here:
+
+        try {
+
+            int Codigo = Integer.valueOf(JOptionPane.showInputDialog(null,
+                    "Informe o código do cliente que deseja excluir:",
+                    "Código do cliente", JOptionPane.QUESTION_MESSAGE));
+
+            DaoCliente dc = new DaoCliente();
+            dc.setCodCli(Codigo);
+            dc.excluir();
+            formWindowOpened(null);
+
+        } catch (Exception ex) {
+
+        }
+
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
+        // TODO add your handling code here:
+
+        HabilitarBotoes(false);
+        HabilitarCampos(true);
+        txtCodigo.setEnabled(false);
+        LimpaCampos();
+
+        txtNome.requestFocus();
+        gravar = true;
+
+    }//GEN-LAST:event_btnIncluirActionPerformed
+
+    private void btnGravarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGravarActionPerformed
+        // TODO add your handling code here:
+
+        try {
+
+            DaoCliente dCli = new DaoCliente();
+
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+            
+            dCli.setNome(txtNome.getText());
+            dCli.setEndereco(txtEndereco.getText());
+            dCli.setCidade(txtCidade.getText());
+            dCli.setBairro(txtBairro.getText());
+            dCli.setUf(txtUf.getText());
+            dCli.setCep(txtCep.getText());
+            dCli.setTelefone(txtTelefone.getText());
+            dCli.setDataNasc(sdf.parse(txtDataNasc.getText()));
+
+            if (gravar) {
+
+                dCli.incluir();
+
+            } else {
+
+                dCli.setCodCli(Integer.valueOf(txtCodigo.getText()));
+                dCli.alterar();
+                
+
+            }
+
+            HabilitarBotoes(true);
+            HabilitarCampos(false);
+
+            gravar = false;
+            editar = false;
+            LimpaCampos();
+
+            formWindowOpened(null);
+
+        } catch (SQLException ex) {
+
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro no Banco "
+                    + "de dados" + ex.getMessage(),
+                    "Erro:", JOptionPane.ERROR_MESSAGE);
+
+        } catch (ClassNotFoundException ex) {
+
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao carregar "
+                    + "o driver do BD" + ex.getMessage(),
+                    "Erro:", JOptionPane.ERROR_MESSAGE);
+
+        } catch (ParseException ex) {
+
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro de conversão"
+                    + ex.getMessage(),
+                    "Erro:", JOptionPane.ERROR_MESSAGE);
+
+        } catch (Exception ex) {
+
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro" + ex.getMessage(),
+                    "Erro:", JOptionPane.ERROR_MESSAGE);
+
+        }
+    }//GEN-LAST:event_btnGravarActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        // TODO add your handling code here:
+        HabilitarBotoes(false);
+        HabilitarCampos(true);
+        LimpaCampos();
+        txtCodigo.setEnabled(false);
+        txtNome.requestFocus();
+        editar = true;
+        try {
+
+            if (tblClientes.getRowCount() > 0) {
+
+                int posLinha = tblClientes.getSelectedRow();
+
+                if (posLinha >= 0) {
+
+                    txtCodigo.setText(tblClientes.getValueAt(posLinha, 0).toString());
+                    txtNome.setText(tblClientes.getValueAt(posLinha, 1).toString());
+                    txtEndereco.setText(tblClientes.getValueAt(posLinha, 2).toString());
+                    txtCidade.setText(tblClientes.getValueAt(posLinha, 3).toString());
+                    txtBairro.setText(tblClientes.getValueAt(posLinha, 4).toString());
+
+                    txtUf.setValue(tblClientes.getValueAt(posLinha, 5).toString());
+                    txtCep.setValue(tblClientes.getValueAt(posLinha, 6).toString());
+
+                    if (tblClientes.getValueAt(posLinha, 7).toString()
+                            .equals("(__)_____-____")) {
+
+                        txtTelefone.setValue("");
+
+                    } else {
+
+                        txtTelefone.setValue(
+                                mfTel.stringToValue(tblClientes
+                                        .getValueAt(posLinha, 7).toString()).toString());
+
+                    }
+
+                    txtDataNasc.setValue(tblClientes.getValueAt(posLinha, 8).toString());
+
+                } else {
+
+                    JOptionPane.showMessageDialog(null, "Selecione um cliente para alterar",
+                            "Erro:", JOptionPane.ERROR_MESSAGE);
+                    btnCancelarActionPerformed(null);
+
+                }
+            } else {
+
+                JOptionPane.showMessageDialog(null, "Não existem clientes cadastrados!",
+                        "Erro:", JOptionPane.ERROR_MESSAGE);
+                btnCancelarActionPerformed(null);
+            }
+
+        } catch (Exception ex) {
+
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro" + ex.getMessage(),
+                    "Erro:", JOptionPane.ERROR_MESSAGE);
+
+        }
+
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
+        // TODO add your handling code here:
+        DaoCliente c = new DaoCliente();
+        String nome = JOptionPane.showInputDialog(null, "informe o nome do cliente"
+                + "ou parte dele: ", "Pesquisar", JOptionPane.QUESTION_MESSAGE);
+        c.setNome(nome);
+
+        try {
+
+            ArrayList<DaoCliente> ListaClientes = c.pesquisar(c);
+            AtualizaTable(ListaClientes);
+
+        } catch (SQLException ex) {
+
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro no Banco "
+                    + "de dados" + ex.getMessage(),
+                    "Erro:", JOptionPane.ERROR_MESSAGE);
+
+        } catch (ClassNotFoundException ex) {
+
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao carregar "
+                    + "o driver do BD" + ex.getMessage(),
+                    "Erro:", JOptionPane.ERROR_MESSAGE);
+
+        } catch (Exception ex) {
+
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro" + ex.getMessage(),
+                    "Erro:", JOptionPane.ERROR_MESSAGE);
+
+        }
+
+    }//GEN-LAST:event_btnPesquisarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        HabilitarBotoes(true);
+        HabilitarCampos(false);
+        LimpaCampos();
+        gravar = false;
+        editar = false;
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void LimpaTable() {
+
+        DefaultTableModel model = (DefaultTableModel) tblClientes.getModel();
+
+        while (model.getRowCount() > 0) {
+            model.removeRow(0);
+        }
+
+    }
+
+    private void AtualizaTable(ArrayList<DaoCliente> clientes) {
+
+        LimpaTable();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        if (!clientes.isEmpty()) {
+
+            DefaultTableModel dadosClientes = (DefaultTableModel) tblClientes.getModel();
+
+            String Linha[] = new String[]{"", "", "", "", "", "", "", "", ""};
+
+            try {
+
+                int pos = -1;
+
+                for (DaoCliente cliente : clientes) {
+
+                    pos++;
+
+                    dadosClientes.addRow(Linha);
+
+                    dadosClientes.setValueAt(cliente.getCodCli(), pos, 0);
+                    dadosClientes.setValueAt(cliente.getNome(), pos, 1);
+                    dadosClientes.setValueAt(cliente.getEndereco(), pos, 2);
+                    dadosClientes.setValueAt(cliente.getCidade(), pos, 3);
+                    dadosClientes.setValueAt(cliente.getBairro(), pos, 4);
+                    dadosClientes.setValueAt(cliente.getUf().toUpperCase(), pos, 5);
+                    dadosClientes.setValueAt(cliente.getCep(), pos, 6);
+
+                    dadosClientes.setValueAt(mfTel.valueToString(cliente.getTelefone()), pos, 7);
+
+                    dadosClientes.setValueAt(sdf.format(cliente.getDataNasc()), pos, 8);
+
+                }
+
+                tblClientes.setModel(dadosClientes);
+
+            } catch (Exception ex) {
+
+            }
+
+        }
+
+    }
+
+    private void HabilitarBotoes(boolean hab) {
+
+        btnIncluir.setEnabled(hab);
+        btnAlterar.setEnabled(hab);
+        btnExcluir.setEnabled(hab);
+        btnPesquisar.setEnabled(hab);
+        btnGravar.setEnabled(!hab);
+        btnCancelar.setEnabled(!hab);
+
+    }
+
+    private void HabilitarCampos(boolean hab) {
+
+        txtCodigo.setEnabled(hab);
+        txtNome.setEnabled(hab);
+        txtEndereco.setEnabled(hab);
+        txtCidade.setEnabled(hab);
+        txtBairro.setEnabled(hab);
+        txtUf.setEnabled(hab);
+        txtCep.setEnabled(hab);
+        txtTelefone.setEnabled(hab);
+        txtDataNasc.setEnabled(hab);
+
+    }
+
+    private void LimpaCampos() {
+
+        txtCodigo.setText("");
+        txtBairro.setText("");
+        txtCep.setText("");
+        txtCidade.setText("");
+        txtDataNasc.setText("");
+        txtEndereco.setText("");
+        txtNome.setText("");
+        txtTelefone.setText("");
+        txtUf.setText("");
+
+    }
 
     /**
      * @param args the command line arguments
@@ -326,15 +766,15 @@ public class FrmCliente extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable tblClientes;
     private javax.swing.JTextField txtBairro;
     private javax.swing.JFormattedTextField txtCep;
     private javax.swing.JTextField txtCidade;
     private javax.swing.JTextField txtCodigo;
+    private javax.swing.JFormattedTextField txtDataNasc;
     private javax.swing.JTextField txtEndereco;
-    private javax.swing.JTextField txtNascimento;
     private javax.swing.JTextField txtNome;
     private javax.swing.JFormattedTextField txtTelefone;
-    private javax.swing.JTextField txtUf;
+    private javax.swing.JFormattedTextField txtUf;
     // End of variables declaration//GEN-END:variables
 }
