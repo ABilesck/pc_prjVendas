@@ -89,7 +89,7 @@ public class DaoItemVenda extends ItemVenda{
         
        String sql = "";
         
-       if(item.getCodPro() > 0){
+       if(item.getCodPro() != 0){
            sql =  "SELECT numVenda, pc_itemvenda.codpro, pc_produto.descricao, "
                    + "pc_itemvenda.quantidade, pc_itemvenda.precounit, "
                    + "(pc_itemvenda.quantidade * pc_itemvenda.precounit) AS SubTotal "
@@ -109,7 +109,7 @@ public class DaoItemVenda extends ItemVenda{
        this.conexao = BancoSQL.getConnection();
        comandoSQL = conexao.prepareStatement(sql);
        
-       if(item.getCodPro() > 0){
+       if(item.getCodPro() != 0){
            comandoSQL.setInt(1, item.getNumVenda());
            comandoSQL.setInt(2, item.getCodPro());
        } else{

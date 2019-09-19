@@ -357,14 +357,14 @@ public class FrmVenda extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Produto", "Descrição", "Quantidade", "SubTotal"
+                "Código", "Produto", "Descrição", "Quantidade", "SubTotal"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -376,6 +376,13 @@ public class FrmVenda extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane3.setViewportView(tblProduto);
+        if (tblProduto.getColumnModel().getColumnCount() > 0) {
+            tblProduto.getColumnModel().getColumn(0).setResizable(false);
+            tblProduto.getColumnModel().getColumn(1).setResizable(false);
+            tblProduto.getColumnModel().getColumn(2).setResizable(false);
+            tblProduto.getColumnModel().getColumn(3).setResizable(false);
+            tblProduto.getColumnModel().getColumn(4).setResizable(false);
+        }
 
         javax.swing.GroupLayout pnlDetalhesLayout = new javax.swing.GroupLayout(pnlDetalhes);
         pnlDetalhes.setLayout(pnlDetalhesLayout);
@@ -830,7 +837,7 @@ public class FrmVenda extends javax.swing.JInternalFrame {
             }
 
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Ocorreu um erro:\n" + ex.getMessage(),
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao abrir novo item:\n" + ex.getMessage(),
                     "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnItemIncluirActionPerformed

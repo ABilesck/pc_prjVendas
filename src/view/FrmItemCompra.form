@@ -34,15 +34,15 @@
               </Group>
               <EmptySpace pref="30" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="txtNumVenda" min="-2" pref="28" max="-2" attributes="0"/>
+                  <Component id="txtNumCompra" min="-2" pref="28" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="cmbProduto" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="txtDescricao" min="-2" pref="140" max="-2" attributes="0"/>
                   </Group>
                   <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                      <Component id="txtQuantidade" alignment="0" pref="90" max="32767" attributes="0"/>
-                      <Component id="txtSubtotal" alignment="0" max="32767" attributes="0"/>
+                      <Component id="txtQuantidade" alignment="0" max="32767" attributes="0"/>
+                      <Component id="txtSubtotal" alignment="0" pref="90" max="32767" attributes="0"/>
                       <Component id="txtPrecoUnit" alignment="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -63,7 +63,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtNumVenda" alignment="3" max="-2" attributes="0"/>
+                  <Component id="txtNumCompra" alignment="3" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -99,10 +99,10 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Venda:"/>
+        <Property name="text" type="java.lang.String" value="Compra:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtNumVenda">
+    <Component class="javax.swing.JTextField" name="txtNumCompra">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
@@ -153,16 +153,22 @@
         <Property name="mnemonic" type="int" value="67"/>
         <Property name="text" type="java.lang.String" value="Cancelar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButton2">
       <Properties>
         <Property name="mnemonic" type="int" value="79"/>
         <Property name="text" type="java.lang.String" value="OK"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JFormattedTextField" name="txtQuantidade">
       <Events>
-        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtQuantidadeKeyReleased"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="txtQuantidade">
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="txtQuantidadeStateChanged"/>
       </Events>
     </Component>
   </SubComponents>

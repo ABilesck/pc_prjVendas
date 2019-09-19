@@ -104,7 +104,7 @@ public class DaoItemCompra extends ItemCompra{
                    + "WHERE numCompra = ?";
        }
        
-       ArrayList<DaoItemCompra> listaItens = new ArrayList<DaoItemCompra>();
+       ArrayList<DaoItemCompra> listaItens = new ArrayList<>();
        
        this.conexao = BancoSQL.getConnection();
        comandoSQL = conexao.prepareStatement(sql);

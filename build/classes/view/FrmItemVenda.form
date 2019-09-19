@@ -41,8 +41,8 @@
                       <Component id="txtDescricao" min="-2" pref="140" max="-2" attributes="0"/>
                   </Group>
                   <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                      <Component id="txtQuantidade" alignment="0" pref="90" max="32767" attributes="0"/>
-                      <Component id="txtSubtotal" alignment="0" max="32767" attributes="0"/>
+                      <Component id="txtQuantidade" alignment="0" max="32767" attributes="0"/>
+                      <Component id="txtSubtotal" alignment="0" pref="90" max="32767" attributes="0"/>
                       <Component id="txtPrecoUnit" alignment="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -153,16 +153,22 @@
         <Property name="mnemonic" type="int" value="67"/>
         <Property name="text" type="java.lang.String" value="Cancelar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButton2">
       <Properties>
         <Property name="mnemonic" type="int" value="79"/>
         <Property name="text" type="java.lang.String" value="OK"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JFormattedTextField" name="txtQuantidade">
       <Events>
-        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtQuantidadeKeyReleased"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="txtQuantidade">
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="txtQuantidadeStateChanged"/>
       </Events>
     </Component>
   </SubComponents>

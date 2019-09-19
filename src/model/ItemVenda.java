@@ -19,7 +19,7 @@ public abstract class ItemVenda implements IMetodosPadrao{
     private double subtotal;
 
     public ItemVenda() {
-        this(0,0,"",0, 0, 0);
+        this(0,0,"",0, 0.0, 0.0);
     }
 
     public ItemVenda(int numVenda, int codPro, String descricao, int quantidade,

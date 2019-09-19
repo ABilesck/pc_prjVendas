@@ -93,14 +93,14 @@ public class DaoCompra extends Compra {
         
         if(compra.getNumCompra() > 0){
             
-            sql = "set dateformat dmy SELECT numCompra, pc_compra.codFor, pc_fornecedor.nome, dataCompra,"
+            sql = "set dateformat dmy SELECT numCompra, pc_compra.codFor, pc_fornecedor.razao, dataCompra,"
                     + " dataEntrega, obs "
                     + "FROM pc_compra INNER JOIN pc_fornecedor ON pc_compra.codFor = pc_fornecedor.codFor"
                     + " WHERE numCompra = ?";
             
         }else{
             
-            sql = "set dateformat dmy SELECT numCompra, pc_compra.codFor, pc_fornecedor.nome, dataCompra,"
+            sql = "set dateformat dmy SELECT numCompra, pc_compra.codFor, pc_fornecedor.razao, dataCompra,"
                     + " dataEntrega, obs "
                     + "FROM pc_compra INNER JOIN pc_fornecedor ON pc_compra.codFor = pc_fornecedor.codFor";
         }
@@ -122,7 +122,7 @@ public class DaoCompra extends Compra {
             compraRetorno = new DaoCompra();
             compraRetorno.setNumCompra(rs.getInt("numcompra"));
             compraRetorno.setCodFor(rs.getInt("codfor"));
-            compraRetorno.setNome(rs.getString("nome"));
+            compraRetorno.setNome(rs.getString("razao"));
             compraRetorno.setDataCompra(rs.getDate("datacompra"));
             compraRetorno.setDataEntrega(rs.getDate("dataentrega"));
             compraRetorno.setObs(rs.getString("obs"));

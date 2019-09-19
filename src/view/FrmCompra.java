@@ -58,7 +58,7 @@ public class FrmCompra extends javax.swing.JInternalFrame {
         try {
 
             DaoFornecedor fornecedor = new DaoFornecedor();
-            forn = new ArrayList<DaoFornecedor>();
+            forn = new ArrayList<>();
             forn.addAll(fornecedor.pesquisar(fornecedor));
             for (DaoFornecedor daoFornecedor : forn) {
 
@@ -67,7 +67,7 @@ public class FrmCompra extends javax.swing.JInternalFrame {
             }
             cmbFornecedor.setSelectedIndex(0);
 
-            itc = new ArrayList<DaoItemCompra>();
+            itc = new ArrayList<>();
 
             mfData = new MaskFormatter("##/##/####");
             mfData.setPlaceholderCharacter('_');
@@ -78,7 +78,7 @@ public class FrmCompra extends javax.swing.JInternalFrame {
             txtDataEntrega.setFormatterFactory(dffData);
 
         } catch (ClassNotFoundException | SQLException | ParseException ex) {
-            
+
         }
     }
 
@@ -128,6 +128,23 @@ public class FrmCompra extends javax.swing.JInternalFrame {
 
         setTitle("Cadastro de Compra");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameOpened(evt);
+            }
+        });
 
         btnIncluir.setText("Incluir");
         btnIncluir.addActionListener(new java.awt.event.ActionListener() {
@@ -183,7 +200,7 @@ public class FrmCompra extends javax.swing.JInternalFrame {
             }
         });
 
-        pnlCompra.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        pnlCompra.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         pnlCompra.setEnabled(false);
 
         jLabel1.setText("Compra");
@@ -307,7 +324,7 @@ public class FrmCompra extends javax.swing.JInternalFrame {
 
         jLabel6.setText("Detalhes");
 
-        pnlDetalhes.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        pnlDetalhes.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         pnlDetalhes.setEnabled(false);
 
         btnItemIncluir.setText("Incluir");
@@ -350,14 +367,14 @@ public class FrmCompra extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Produto", "Descrição", "Quantidade", "SubTotal"
+                "Código", "Produto", "Descrição", "Quantidade", "SubTotal"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -373,6 +390,8 @@ public class FrmCompra extends javax.swing.JInternalFrame {
             tblProduto.getColumnModel().getColumn(0).setResizable(false);
             tblProduto.getColumnModel().getColumn(1).setResizable(false);
             tblProduto.getColumnModel().getColumn(2).setResizable(false);
+            tblProduto.getColumnModel().getColumn(3).setResizable(false);
+            tblProduto.getColumnModel().getColumn(4).setResizable(false);
         }
 
         javax.swing.GroupLayout pnlDetalhesLayout = new javax.swing.GroupLayout(pnlDetalhes);
@@ -412,7 +431,7 @@ public class FrmCompra extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel7.setText("Total da Compra:");
 
@@ -512,7 +531,8 @@ public class FrmCompra extends javax.swing.JInternalFrame {
                 atualizaTableItem(item.Pesquisar(item));
 
             } catch (ClassNotFoundException | SQLException ex) {
-
+                JOptionPane.showMessageDialog(null, "Ocorreu um erro na tabela:\n"
+                        + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
         }
 
@@ -532,24 +552,23 @@ public class FrmCompra extends javax.swing.JInternalFrame {
 
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
         // TODO add your handling code here:
-        DaoFornecedor fornecedor;
+        //DaoFornecedor fornecedor;
 
         try {
 
             HabilitarBotoes(false);
             habilitarCampos(false, pnlDetalhes);
             habilitarCampos(true, pnlCompra);
-            cmbFornecedorActionPerformed(null);
             txtObs.setEnabled(true);
             LimparCampos(pnlCompra);
+            cmbFornecedorActionPerformed(null);
             txtObs.setText("");
             txtNumCompra.setEnabled(false);
             incluir = true;
 
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Ocorreu um erro:\n"
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao incluir a compra:\n"
                     + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-            ex.printStackTrace();
         }
 
     }//GEN-LAST:event_btnIncluirActionPerformed
@@ -571,7 +590,6 @@ public class FrmCompra extends javax.swing.JInternalFrame {
                 compra.setDataEntrega(sdf.parse(txtDataEntrega.getText()));
                 compra.setObs(txtObs.getText());
                 compra.incluir();
-                System.out.println(compra.getCodFor());
 
             } else if (alterar) {
 
@@ -585,15 +603,14 @@ public class FrmCompra extends javax.swing.JInternalFrame {
             }
 
             btnCancelarActionPerformed(null);
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Ocorreu um erro no banco de dados" + ex.getMessage(),
                     "Erro:", JOptionPane.ERROR_MESSAGE);
-        }catch(ClassNotFoundException ex){
+        } catch (ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(null, "Ocorreu um erro na conexão" + ex.getMessage(),
                     "Erro:", JOptionPane.ERROR_MESSAGE);
-        }
-        catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao incluir" + ex.getMessage(),
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao gravar" + ex.getMessage(),
                     "Erro:", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnGravarActionPerformed
@@ -617,14 +634,14 @@ public class FrmCompra extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         DaoCompra compra = new DaoCompra();
         DaoItemCompra item = new DaoItemCompra();
-        System.out.println("lalala");
         try {
 
             if (compra.Pesquisar(compra).isEmpty()) {
 
+                /*
                 JOptionPane.showMessageDialog(null, "Não há compras cadastradas!",
                         "Atenção", JOptionPane.WARNING_MESSAGE);
-
+                 */
             } else {
 
                 atualizaTableCompras(compra.Pesquisar(compra));
@@ -646,10 +663,10 @@ public class FrmCompra extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Ocorreu um erro ao abrir o form BD" + ex.getMessage(),
                     "Erro:", JOptionPane.ERROR_MESSAGE);
-        }catch(ClassNotFoundException ex){
+        } catch (ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(null, "Ocorreu um erro ao abrir o form con" + ex.getMessage(),
                     "Erro:", JOptionPane.ERROR_MESSAGE);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Ocorreu um erro ao abrir o form" + ex.getMessage(),
                     "Erro:", JOptionPane.ERROR_MESSAGE);
         }
@@ -689,7 +706,7 @@ public class FrmCompra extends javax.swing.JInternalFrame {
                 if (posLinha >= 0) {
                     txtNumCompra.setText(tblCompra.getValueAt(posLinha, 0).toString());
                     for (DaoFornecedor daoCliente : forn) {
-                        if (daoCliente.getCodFor()== Integer.valueOf(
+                        if (daoCliente.getCodFor() == Integer.valueOf(
                                 tblCompra.getValueAt(posLinha, 1).toString())) {
                             cmbFornecedor.setSelectedIndex(forn.indexOf(daoCliente));
                         }
@@ -708,6 +725,7 @@ public class FrmCompra extends javax.swing.JInternalFrame {
                 }
 
             } else {
+
                 JOptionPane.showMessageDialog(null, "Não existem compras cadastradas!",
                         "Erro", JOptionPane.ERROR_MESSAGE);
                 btnCancelarActionPerformed(null);
@@ -778,18 +796,16 @@ public class FrmCompra extends javax.swing.JInternalFrame {
                 if (dv.Pesquisar(dv).isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Venda não encontrada!",
                             "Erro:", JOptionPane.ERROR_MESSAGE);
-                } else {
-                    if (di.getNumCompra() < 1) {
+                } else if (di.getNumCompra() < 1) {
 
-                        dv.setNumCompra(0);
-                        di.setNumCompra(dv.getNumCompra());
+                    dv.setNumCompra(0);
+                    di.setNumCompra(dv.getNumCompra());
 
-                        atualizaTableCompras(dv.Pesquisar(dv));
+                    atualizaTableCompras(dv.Pesquisar(dv));
 
-                        tblCompra.setRowSelectionInterval(0, 0);
+                    tblCompra.setRowSelectionInterval(0, 0);
 
-                        tblCompraMouseClicked(null);
-                    }
+                    tblCompraMouseClicked(null);
                 }
             }
 
@@ -832,7 +848,7 @@ public class FrmCompra extends javax.swing.JInternalFrame {
             }
 
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Ocorreu um erro:\n" + ex.getMessage(),
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao abir o formulario de item:\n" + ex.getMessage(),
                     "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnItemIncluirActionPerformed
@@ -858,20 +874,20 @@ public class FrmCompra extends javax.swing.JInternalFrame {
 
     private void btnItemAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnItemAlterarActionPerformed
         // TODO add your handling code here:
-        try{
-            
+        try {
+
             DaoItemCompra item = new DaoItemCompra();
-            item.setNumCompra((Integer)tblCompra.getValueAt(tblCompra.getSelectedRow(), 0));
-            
-            if(item.Pesquisar(item).isEmpty()){
-                
-                if(tblProduto.getSelectedRow() >= 0){
+            item.setNumCompra((Integer) tblCompra.getValueAt(tblCompra.getSelectedRow(), 0));
+
+            if (item.Pesquisar(item).isEmpty()) {
+
+                if (tblProduto.getSelectedRow() >= 0) {
                     item = itc.get(tblProduto.getSelectedRow());
-                    if(item != null){
+                    if (item != null) {
                         item = FrmItemCompra.showItemCompra(item);
-                        
+
                         for (DaoItemCompra daoIt : itc) {
-                            if(daoIt.getCodPro() == item.getCodPro()){
+                            if (daoIt.getCodPro() == item.getCodPro()) {
                                 JOptionPane.showMessageDialog(null, "O produto ja cadastrado!",
                                         "Erro", JOptionPane.ERROR_MESSAGE);
                                 return;
@@ -880,54 +896,54 @@ public class FrmCompra extends javax.swing.JInternalFrame {
                         itc.set(tblProduto.getSelectedRow(), item);
                         atualizaTableItem(itc);
                     }
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(null, "Selecione um produto para alterar!",
-                                        "Erro", JOptionPane.ERROR_MESSAGE);
+                            "Erro", JOptionPane.ERROR_MESSAGE);
                 }
-                
+
             }
-            
-        }catch(Exception ex){
+
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Ocorreu um erro:\n" + ex.getMessage(),
-                                        "Erro", JOptionPane.ERROR_MESSAGE);
+                    "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnItemAlterarActionPerformed
 
     private void btnItemExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnItemExcluirActionPerformed
         // TODO add your handling code here:
-        try{
-            
-            Object[] botoes = {"Sim","Não"};
-            
+        try {
+
+            Object[] botoes = {"Sim", "Não"};
+
             DaoItemCompra item = new DaoItemCompra();
-            item.setNumCompra((Integer)tblCompra.getValueAt(tblCompra.getSelectedRow(), 0));
-            
-            if(item.Pesquisar(item).isEmpty()){
-                
-                if(tblProduto.getSelectedRow() >= 0){
+            item.setNumCompra((Integer) tblCompra.getValueAt(tblCompra.getSelectedRow(), 0));
+
+            if (item.Pesquisar(item).isEmpty()) {
+
+                if (tblProduto.getSelectedRow() >= 0) {
                     item = itc.get(tblProduto.getSelectedRow());
-                    if(JOptionPane.showOptionDialog(null, 
-                            "Deseja apagar o produto?", "Atenção", 
+                    if (JOptionPane.showOptionDialog(null,
+                            "Deseja apagar o produto?", "Atenção",
                             JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
-                            null, botoes, botoes[1]) == JOptionPane.YES_OPTION){
-                     
+                            null, botoes, botoes[1]) == JOptionPane.YES_OPTION) {
+
                         itc.remove(item);
                         atualizaTableItem(itc);
-                        
+
                     }
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(null, "Selecione um produto primeiro",
-                                        "Erro", JOptionPane.ERROR_MESSAGE);
+                            "Erro", JOptionPane.ERROR_MESSAGE);
                 }
-                
-            }else{
+
+            } else {
                 JOptionPane.showMessageDialog(null, "A compra está encerrada",
-                                        "Erro", JOptionPane.ERROR_MESSAGE);
+                        "Erro", JOptionPane.ERROR_MESSAGE);
             }
-            
-        }catch(Exception ex){
+
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Ocorreu um erro:\n" + ex.getMessage(),
-                                        "Erro", JOptionPane.ERROR_MESSAGE);
+                    "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnItemExcluirActionPerformed
 
@@ -935,28 +951,33 @@ public class FrmCompra extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         DaoCompra dv = new DaoCompra();
         DaoItemCompra di = new DaoItemCompra();
-        try{
-            
-            String CodProTemp = JOptionPane.showInputDialog(this, 
-                    "Informe o código do produto:","Pesquisa",
+        try {
+
+            String CodProTemp = JOptionPane.showInputDialog(this,
+                    "Informe o código do produto:", "Pesquisa",
                     JOptionPane.QUESTION_MESSAGE);
-            if(CodProTemp != null){
-                dv.setNumCompra((Integer)tblCompra.getValueAt(tblCompra.getSelectedRow(), 0));
+            if (CodProTemp != null) {
+                dv.setNumCompra((Integer) tblCompra.getValueAt(tblCompra.getSelectedRow(), 0));
                 di.setNumCompra(Integer.valueOf(dv.getNumCompra()));
                 di.setCodPro(Integer.valueOf(CodProTemp));
-                if(di.Pesquisar(di).isEmpty()){
+                if (di.Pesquisar(di).isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Produto não encontrado!",
-                                        "Erro", JOptionPane.ERROR_MESSAGE);
-                }else{
+                            "Erro", JOptionPane.ERROR_MESSAGE);
+                } else {
                     atualizaTableItem(di.Pesquisar(di));
                 }
             }
-            
-        }catch(Exception ex){
+
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Ocorreu um erro:\n" + ex.getMessage(),
-                                        "Erro", JOptionPane.ERROR_MESSAGE);
+                    "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnItemPesquisarActionPerformed
+
+    private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
+        // TODO add your handling code here:
+        formWindowOpened(null);
+    }//GEN-LAST:event_formInternalFrameOpened
 
     /**
      * @param args the command line arguments
@@ -1053,9 +1074,11 @@ public class FrmCompra extends javax.swing.JInternalFrame {
         double total = 0;
 
         if (itens.isEmpty()) {
+            /*
             JOptionPane.showMessageDialog(null, "Não foram encontrados "
                     + "Itens nessa compra!", "Anteção",
                     JOptionPane.INFORMATION_MESSAGE);
+             */
         } else {
 
             DefaultTableModel dadosItens = (DefaultTableModel) tblProduto.getModel();
@@ -1067,6 +1090,7 @@ public class FrmCompra extends javax.swing.JInternalFrame {
                 int posicao = -1;
                 for (DaoItemCompra item : itens) {
 
+                    posicao++;
                     dadosItens.addRow(Linha);
 
                     dadosItens.setValueAt(item.getCodPro(), posicao, 0);

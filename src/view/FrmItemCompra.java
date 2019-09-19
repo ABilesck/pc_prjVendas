@@ -22,22 +22,19 @@ import javax.swing.text.*;
  */
 public class FrmItemCompra extends javax.swing.JDialog {
 
-    static DaoItemCompra showItemCompra(DaoItemCompra item) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     ArrayList<DaoProduto> pro;
 
     NumberFormatter nfPreco;
 
     NumberFormatter nfNumero;
 
-    private static DaoItemVenda itemRetorno;
+    private static DaoItemCompra itemRetorno;
 
     /**
      * Creates new form FrmItemVenda
      */
-    private FrmItemCompra(DaoItemVenda item) throws SQLException, ClassNotFoundException {
+    private FrmItemCompra(DaoItemCompra item) throws SQLException, ClassNotFoundException {
+
         initComponents();
 
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
@@ -48,28 +45,29 @@ public class FrmItemCompra extends javax.swing.JDialog {
 
         setBounds(x, y, this.getWidth(), this.getHeight());
 
-        txtNumVenda.setText(String.valueOf(item.getNumVenda()));
+        txtNumCompra.setText(String.valueOf(item.getNumCompra()));
 
         setModal(true);
         setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 
         try {
 
-            DecimalFormat df = new DecimalFormat("R$ #,###,##0,00;-R$ #,###,##0,00");
+            DecimalFormat df = new DecimalFormat("R$ #,##0,00;-R$ #,##0,00");
 
             nfPreco = new NumberFormatter(df);
             nfPreco.setValueClass(Integer.class);
 
+            /*
             DecimalFormat dfn = new DecimalFormat("###0");
             nfNumero = new NumberFormatter(dfn);
             nfNumero.setValueClass(Integer.class);
             DefaultFormatterFactory dffQtd = new DefaultFormatterFactory(nfNumero);
             txtQuantidade.setFormatterFactory(dffQtd);
-
+             */
             DaoProduto produto = new DaoProduto();
-            pro = new ArrayList<DaoProduto>();
+            pro = new ArrayList<>();
+            cmbProduto.removeAllItems();
             pro.addAll(produto.pesquisar(produto));
-            cmbProduto.removeAllItems();;
 
             for (DaoProduto daoPro : pro) {
                 cmbProduto.addItem(String.valueOf(daoPro.getCodPro()));
@@ -89,16 +87,16 @@ public class FrmItemCompra extends javax.swing.JDialog {
 
         } catch (ClassNotFoundException ex) {
 
-            throw new ClassNotFoundException("ocorreu um erro no formulario de venda\n"
+            throw new ClassNotFoundException("ocorreu um erro no formulario de item\n"
                     + ex.getMessage());
 
         }
     }
 
-    public static DaoItemVenda showItemVenda(DaoItemVenda item) throws SQLException,
+    public static DaoItemCompra showItemCompra(DaoItemCompra item) throws SQLException,
             ClassNotFoundException {
 
-        FrmItemCompra frmItemVenda = new FrmItemCompra(item);
+        FrmItemCompra frmItemCompra = new FrmItemCompra(item);
         return itemRetorno;
     }
 
@@ -112,7 +110,7 @@ public class FrmItemCompra extends javax.swing.JDialog {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        txtNumVenda = new javax.swing.JTextField();
+        txtNumCompra = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         cmbProduto = new javax.swing.JComboBox<>();
         txtDescricao = new javax.swing.JTextField();
@@ -123,11 +121,11 @@ public class FrmItemCompra extends javax.swing.JDialog {
         txtSubtotal = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        txtQuantidade = new javax.swing.JFormattedTextField();
+        txtQuantidade = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setText("Venda:");
+        jLabel1.setText("Compra:");
 
         jLabel2.setText("Produto:");
 
@@ -146,13 +144,23 @@ public class FrmItemCompra extends javax.swing.JDialog {
 
         jButton1.setMnemonic('C');
         jButton1.setText("Cancelar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setMnemonic('O');
         jButton2.setText("OK");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
-        txtQuantidade.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtQuantidadeKeyReleased(evt);
+        txtQuantidade.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                txtQuantidadeStateChanged(evt);
             }
         });
 
@@ -170,14 +178,14 @@ public class FrmItemCompra extends javax.swing.JDialog {
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtNumVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNumCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(cmbProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(txtQuantidade, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
-                        .addComponent(txtSubtotal, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txtQuantidade, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txtSubtotal, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
                         .addComponent(txtPrecoUnit, javax.swing.GroupLayout.Alignment.LEADING)))
                 .addContainerGap(31, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -193,7 +201,7 @@ public class FrmItemCompra extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtNumVenda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNumCompra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -231,18 +239,19 @@ public class FrmItemCompra extends javax.swing.JDialog {
             txtPrecoUnit.setText(nfPreco.valueToString(
                     pro.get(cmbProduto.getSelectedIndex()).getPrecoUnit()));
             txtSubtotal.setText(nfPreco.valueToString(Integer.valueOf(
-                    txtQuantidade.getText()) * pro.get(
-                    cmbProduto.getSelectedIndex()).getPrecoUnit()));
+                    txtQuantidade.getValue().toString()) * pro.get(
+                            cmbProduto.getSelectedIndex()).getPrecoUnit()));
 
         } catch (ArrayIndexOutOfBoundsException ex) {
 
-            JOptionPane.showMessageDialog(null, "ocorreu um erro:\n"
+            /*
+            JOptionPane.showMessageDialog(null, "ocorreu um erro ao selecionar um produto:\n"
                     + "O código digitado não corresponde a nenhum produto!\n"
                     + "Valor: " + ex.getMessage(), "Erro:", JOptionPane.ERROR_MESSAGE);
-
+             */
         } catch (Exception ex) {
 
-            JOptionPane.showMessageDialog(null, "ocorreu um erro:\n"
+            JOptionPane.showMessageDialog(null, "ocorreu um erro ao selecionar um produto:\n"
                     + ex.getMessage(), "Erro:", JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace();
 
@@ -260,15 +269,15 @@ public class FrmItemCompra extends javax.swing.JDialog {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
 
-        itemRetorno = new DaoItemVenda();
+        itemRetorno = new DaoItemCompra();
         try {
 
-            itemRetorno.setNumVenda(Integer.valueOf(txtNumVenda.getText()));
+            itemRetorno.setNumCompra(Integer.valueOf(txtNumCompra.getText()));
             itemRetorno.setCodPro((pro.get(cmbProduto.getSelectedIndex()).getCodPro()));
             itemRetorno.setDescricao(pro.get(cmbProduto.getSelectedIndex()).getDescricao());
-            itemRetorno.setQuantidade(Integer.valueOf(txtQuantidade.getText()));
+            itemRetorno.setQuantidade(Integer.valueOf(txtQuantidade.getValue().toString()));
             itemRetorno.setPrecoUnit(pro.get(cmbProduto.getSelectedIndex()).getPrecoUnit());
-            itemRetorno.setSubtotal(Integer.valueOf(txtQuantidade.getText())
+            itemRetorno.setSubtotal(Integer.valueOf(txtQuantidade.getValue().toString())
                     * pro.get(cmbProduto.getSelectedIndex()).getPrecoUnit());
 
             dispose();
@@ -283,25 +292,20 @@ public class FrmItemCompra extends javax.swing.JDialog {
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void txtQuantidadeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQuantidadeKeyReleased
+    private void txtQuantidadeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_txtQuantidadeStateChanged
         // TODO add your handling code here:
-        try {
-
+        try{
+            
             txtSubtotal.setText(nfPreco.valueToString(Integer.valueOf(
-                    txtQuantidade.getText()) * pro.get(
-                    cmbProduto.getSelectedIndex()).getPrecoUnit()));
-
-        } catch (ParseException | ArithmeticException ex) {
-
-            txtQuantidade.setValue((Integer) 1);
-
-        }catch (Exception ex){
+                    txtQuantidade.getValue().toString()) * pro.get(
+                            cmbProduto.getSelectedIndex()).getPrecoUnit()));
             
-            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao calcular o SubTotal:\n"
-            + ex.getMessage(),"Erro:",JOptionPane.ERROR_MESSAGE);
-            
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, "ocorreu um erro ao retornar o subtotal"
+                    + " item para essa venda:\n" + ex.getMessage(), "Erro:",
+                    JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_txtQuantidadeKeyReleased
+    }//GEN-LAST:event_txtQuantidadeStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -314,9 +318,9 @@ public class FrmItemCompra extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JTextField txtDescricao;
-    private javax.swing.JTextField txtNumVenda;
+    private javax.swing.JTextField txtNumCompra;
     private javax.swing.JTextField txtPrecoUnit;
-    private javax.swing.JFormattedTextField txtQuantidade;
+    private javax.swing.JSpinner txtQuantidade;
     private javax.swing.JTextField txtSubtotal;
     // End of variables declaration//GEN-END:variables
 }

@@ -26,8 +26,6 @@ public class BancoSQL {
     
         Class.forName(servidor);
         
-        System.out.println("conectado");
-        
         return DriverManager.getConnection(urlBanco + nomeBanco + 
                 usuario + senha);
     }
