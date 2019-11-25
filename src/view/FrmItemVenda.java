@@ -52,7 +52,7 @@ public class FrmItemVenda extends javax.swing.JDialog {
 
         try {
 
-            DecimalFormat df = new DecimalFormat("R$ #,##0,00;-R$ #,##0,00");
+            DecimalFormat df = new DecimalFormat("R$ #,##0.00;-R$ #,##0.00");
 
             nfPreco = new NumberFormatter(df);
             nfPreco.setValueClass(Integer.class);

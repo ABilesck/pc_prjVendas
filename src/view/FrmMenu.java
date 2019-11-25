@@ -5,11 +5,17 @@
  */
 package view;
 
+import static com.lowagie.text.xml.simpleparser.EntitiesToSymbol.map;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
@@ -66,9 +72,11 @@ public class FrmMenu extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         mnuSair = new javax.swing.JMenuItem();
         mnuRelatorio = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
-        jMenuItem7 = new javax.swing.JMenuItem();
+        mnuRelClientes = new javax.swing.JMenuItem();
+        mnuRelProdutos = new javax.swing.JMenuItem();
+        mnuRelVendas = new javax.swing.JMenuItem();
+        mnuRelFornecedores = new javax.swing.JMenuItem();
+        mnuRelCompras = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Cadastros");
@@ -80,7 +88,7 @@ public class FrmMenu extends javax.swing.JFrame {
 
         jToolBar1.setRollover(true);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         txtStatus.setEditable(false);
         jScrollPane1.setViewportView(txtStatus);
@@ -170,14 +178,45 @@ public class FrmMenu extends javax.swing.JFrame {
 
         mnuRelatorio.setText("Relatorios");
 
-        jMenuItem5.setText("jMenuItem5");
-        mnuRelatorio.add(jMenuItem5);
+        mnuRelClientes.setText("Clientes");
+        mnuRelClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuRelClientesActionPerformed(evt);
+            }
+        });
+        mnuRelatorio.add(mnuRelClientes);
 
-        jMenuItem6.setText("jMenuItem6");
-        mnuRelatorio.add(jMenuItem6);
+        mnuRelProdutos.setText("Produtos");
+        mnuRelProdutos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuRelProdutosActionPerformed(evt);
+            }
+        });
+        mnuRelatorio.add(mnuRelProdutos);
 
-        jMenuItem7.setText("jMenuItem7");
-        mnuRelatorio.add(jMenuItem7);
+        mnuRelVendas.setText("Vendas");
+        mnuRelVendas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuRelVendasActionPerformed(evt);
+            }
+        });
+        mnuRelatorio.add(mnuRelVendas);
+
+        mnuRelFornecedores.setText("Fornecedores");
+        mnuRelFornecedores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuRelFornecedoresActionPerformed(evt);
+            }
+        });
+        mnuRelatorio.add(mnuRelFornecedores);
+
+        mnuRelCompras.setText("Compras");
+        mnuRelCompras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuRelComprasActionPerformed(evt);
+            }
+        });
+        mnuRelatorio.add(mnuRelCompras);
 
         jMenuBar1.add(mnuRelatorio);
 
@@ -263,6 +302,57 @@ public class FrmMenu extends javax.swing.JFrame {
         frmCompra.show();
     }//GEN-LAST:event_mnuComprasActionPerformed
 
+    private void mnuRelVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuRelVendasActionPerformed
+        try {
+            // TODO add your handling code here:
+            VisualizaRpt.GerarRel("trueRtpVendas.jasper", null, "Vendas");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro" + ex.getMessage(),
+                    "Erro:", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_mnuRelVendasActionPerformed
+
+    private void mnuRelClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuRelClientesActionPerformed
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            VisualizaRpt.GerarRel("RptCliente.jasper", null, "Clientes");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro" + ex.getMessage(),
+                    "Erro:", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_mnuRelClientesActionPerformed
+
+    private void mnuRelProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuRelProdutosActionPerformed
+        // TODO add your handling code here:
+        try{
+            VisualizaRpt.GerarRel("rptProdutos.jasper", null, "Produtos");
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro" + ex.getMessage(),
+                    "Erro:", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_mnuRelProdutosActionPerformed
+
+    private void mnuRelFornecedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuRelFornecedoresActionPerformed
+        // TODO add your handling code here:
+        try{
+            VisualizaRpt.GerarRel("rptFornecedor.jasper", null, "Fornecedor");
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro" + ex.getMessage(),
+                    "Erro:", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_mnuRelFornecedoresActionPerformed
+
+    private void mnuRelComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuRelComprasActionPerformed
+        // TODO add your handling code here:
+        try{
+            VisualizaRpt.GerarRel("rptCompras.jasper", null, "Compras");
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro" + ex.getMessage(),
+                    "Erro:", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_mnuRelComprasActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -304,9 +394,6 @@ public class FrmMenu extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane Desktop;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
@@ -316,6 +403,11 @@ public class FrmMenu extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuCompras;
     private javax.swing.JMenuItem mnuFornecedor;
     private javax.swing.JMenuItem mnuProdutos;
+    private javax.swing.JMenuItem mnuRelClientes;
+    private javax.swing.JMenuItem mnuRelCompras;
+    private javax.swing.JMenuItem mnuRelFornecedores;
+    private javax.swing.JMenuItem mnuRelProdutos;
+    private javax.swing.JMenuItem mnuRelVendas;
     private javax.swing.JMenu mnuRelatorio;
     private javax.swing.JMenuItem mnuSair;
     private javax.swing.JMenuItem mnuVendas;

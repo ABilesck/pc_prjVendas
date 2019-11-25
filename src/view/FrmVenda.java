@@ -194,7 +194,7 @@ public class FrmVenda extends javax.swing.JInternalFrame {
             }
         });
 
-        pnlVenda.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        pnlVenda.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
         pnlVenda.setEnabled(false);
 
         jLabel1.setText("Venda");
@@ -297,6 +297,7 @@ public class FrmVenda extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblVenda.getTableHeader().setReorderingAllowed(false);
         tblVenda.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblVendaMouseClicked(evt);
@@ -314,7 +315,7 @@ public class FrmVenda extends javax.swing.JInternalFrame {
 
         jLabel6.setText("Detalhes");
 
-        pnlDetalhes.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        pnlDetalhes.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
         pnlDetalhes.setEnabled(false);
 
         btnItemIncluir.setText("Incluir");
@@ -421,7 +422,7 @@ public class FrmVenda extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
 
         jLabel7.setText("Total da Venda:");
 
@@ -864,24 +865,21 @@ public class FrmVenda extends javax.swing.JInternalFrame {
     private void btnItemAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnItemAlterarActionPerformed
         // TODO add your handling code here:
         try {
-
             DaoItemVenda item = new DaoItemVenda();
-            item.setNumVenda((Integer) tblVenda.getValueAt(tblVenda.getSelectedRow(), 0));
-
+            item.setNumVenda((Integer)tblVenda.getValueAt(tblVenda.getSelectedRow(), 0));
             if (item.Pesquisar(item).isEmpty()) {
-
                 if (tblProduto.getSelectedRow() >= 0) {
-                    item = it.get(tblProduto.getSelectedRow());
+                    //item = it.get(tblProduto.convertRowIndexToModel(tblProduto.getSelectedRow()));
                     if (item != null) {
                         item = FrmItemVenda.showItemVenda(item);
 
-                        for (DaoItemVenda daoIt : it) {
-                            if (daoIt.getCodPro() == item.getCodPro()) {
-                                JOptionPane.showMessageDialog(null, "O produto ja cadastrado!",
-                                        "Erro", JOptionPane.ERROR_MESSAGE);
-                                return;
-                            }
-                        }
+//                        for (DaoItemVenda daoIt : it) {
+//                            if (daoIt.getCodPro() == item.getCodPro()) {
+//                                JOptionPane.showMessageDialog(null, "O produto ja cadastrado!",
+//                                        "Erro", JOptionPane.ERROR_MESSAGE);
+//                                return;
+//                            }
+//                        }
                         it.set(tblProduto.getSelectedRow(), item);
                         atualizaTableItem(it);
                     }
@@ -894,7 +892,7 @@ public class FrmVenda extends javax.swing.JInternalFrame {
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Ocorreu um erro:\n" + ex.getMessage(),
-                    "Erro", JOptionPane.ERROR_MESSAGE);
+                    "Erro ao alterar um produto", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnItemAlterarActionPerformed
 

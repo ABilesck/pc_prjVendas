@@ -193,6 +193,7 @@ public class FrmProduto extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblprodutos.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblprodutos);
         if (tblprodutos.getColumnModel().getColumnCount() > 0) {
             tblprodutos.getColumnModel().getColumn(0).setResizable(false);

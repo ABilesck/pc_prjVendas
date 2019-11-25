@@ -343,6 +343,7 @@ public class FrmCliente extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblClientes.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(tblClientes);
         if (tblClientes.getColumnModel().getColumnCount() > 0) {
             tblClientes.getColumnModel().getColumn(0).setResizable(false);

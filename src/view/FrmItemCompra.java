@@ -52,7 +52,7 @@ public class FrmItemCompra extends javax.swing.JDialog {
 
         try {
 
-            DecimalFormat df = new DecimalFormat("R$ #,##0,00;-R$ #,##0,00");
+            DecimalFormat df = new DecimalFormat("R$ #,##0.00;-R$ #,##0.00");
 
             nfPreco = new NumberFormatter(df);
             nfPreco.setValueClass(Integer.class);
@@ -136,11 +136,17 @@ public class FrmItemCompra extends javax.swing.JDialog {
             }
         });
 
+        txtDescricao.setEditable(false);
+
         jLabel3.setText("Quantidade:");
 
         jLabel4.setText("Preço Unitário:");
 
         jLabel5.setText("SubTotal:");
+
+        txtPrecoUnit.setEditable(false);
+
+        txtSubtotal.setEditable(false);
 
         jButton1.setMnemonic('C');
         jButton1.setText("Cancelar");

@@ -436,6 +436,7 @@ public class FrmFornecedor extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblFornecedores.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(tblFornecedores);
         if (tblFornecedores.getColumnModel().getColumnCount() > 0) {
             tblFornecedores.getColumnModel().getColumn(0).setResizable(false);

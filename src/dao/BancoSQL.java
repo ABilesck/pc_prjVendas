@@ -16,7 +16,7 @@ import java.sql.SQLException;
 public class BancoSQL {
     
     private static String servidor = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    private static String urlBanco = "jdbc:sqlserver://PC-DESKTOP\\SQLEXPRESS;";
+    private static String urlBanco = "jdbc:sqlserver://pc-desktop\\sqlexpress;";
     private static String nomeBanco = "databaseName=vendas;";
     private static String usuario = "user=alex;";
     private static String senha = "password=alex123";

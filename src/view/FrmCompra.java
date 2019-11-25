@@ -35,7 +35,7 @@ public class FrmCompra extends javax.swing.JInternalFrame {
     ArrayList<DaoFornecedor> forn;
 
     ArrayList<DaoItemCompra> itc;
-
+    
     NumberFormatter nfPreco;
     MaskFormatter mfData;
 
@@ -200,7 +200,7 @@ public class FrmCompra extends javax.swing.JInternalFrame {
             }
         });
 
-        pnlCompra.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        pnlCompra.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
         pnlCompra.setEnabled(false);
 
         jLabel1.setText("Compra");
@@ -304,6 +304,7 @@ public class FrmCompra extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblCompra.getTableHeader().setReorderingAllowed(false);
         tblCompra.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblCompraMouseClicked(evt);
@@ -324,7 +325,7 @@ public class FrmCompra extends javax.swing.JInternalFrame {
 
         jLabel6.setText("Detalhes");
 
-        pnlDetalhes.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        pnlDetalhes.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
         pnlDetalhes.setEnabled(false);
 
         btnItemIncluir.setText("Incluir");
@@ -431,7 +432,7 @@ public class FrmCompra extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
 
         jLabel7.setText("Total da Compra:");
 
@@ -875,24 +876,23 @@ public class FrmCompra extends javax.swing.JInternalFrame {
     private void btnItemAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnItemAlterarActionPerformed
         // TODO add your handling code here:
         try {
-
             DaoItemCompra item = new DaoItemCompra();
-            item.setNumCompra((Integer) tblCompra.getValueAt(tblCompra.getSelectedRow(), 0));
-
+            item.setNumCompra((Integer)tblCompra.getValueAt(tblCompra.getSelectedRow(), 0));
+            //item.setCodPro((Integer)tblCompra.getValueAt(tblProduto.getSelectedRow(), 0));
             if (item.Pesquisar(item).isEmpty()) {
 
                 if (tblProduto.getSelectedRow() >= 0) {
-                    item = itc.get(tblProduto.getSelectedRow());
+                    //item = itc.get(tblProduto.getSelectedRow());
                     if (item != null) {
                         item = FrmItemCompra.showItemCompra(item);
 
-                        for (DaoItemCompra daoIt : itc) {
-                            if (daoIt.getCodPro() == item.getCodPro()) {
-                                JOptionPane.showMessageDialog(null, "O produto ja cadastrado!",
-                                        "Erro", JOptionPane.ERROR_MESSAGE);
-                                return;
-                            }
-                        }
+//                        for (DaoItemCompra daoIt : itc) {
+//                            if (daoIt.getCodPro() == item.getCodPro()) {
+//                                JOptionPane.showMessageDialog(null, "O produto ja cadastrado!",
+//                                        "Erro", JOptionPane.ERROR_MESSAGE);
+//                                return;
+//                            }
+//                        }
                         itc.set(tblProduto.getSelectedRow(), item);
                         atualizaTableItem(itc);
                     }

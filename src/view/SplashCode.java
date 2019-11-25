@@ -42,8 +42,8 @@ public class SplashCode extends JWindow {
         JPanel content = (JPanel) getContentPane();
         content.setBackground(Color.white);
 
-        int width = 500;
-        int height = 300;
+        int width = 600;
+        int height = 520;
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
         int x = (screen.width - width) / 2;
@@ -51,11 +51,11 @@ public class SplashCode extends JWindow {
 
         setBounds(x, y, width, height);
 
-        JLabel label = new JLabel(new ImageIcon("src/imagens/splash.jpg"));
+        JLabel label = new JLabel(new ImageIcon("src/view/SplashImage.png"));
 
-        JLabel copyrt = new JLabel("Splash", JLabel.CENTER);
+        JLabel copyrt = new JLabel("Controle de vendas - java edition", JLabel.CENTER);
         label.setSize(x / 2, y / 2);
-        copyrt.setFont(new Font("Sans-Serif", Font.BOLD, 12));
+        copyrt.setFont(new Font("Sans-Serif", Font.BOLD, 16));
         content.add(label, BorderLayout.CENTER);
         content.add(copyrt, BorderLayout.SOUTH);
         Color oraRed = new Color(156, 20, 20, 255);
